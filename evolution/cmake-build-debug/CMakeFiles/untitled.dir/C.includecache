@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/smurp/CLionProjects/evolution/linked-list.c
+stdio.h
+-
+linked-list.h
+/mnt/c/Users/smurp/CLionProjects/evolution/linked-list.h
+xmalloc.h
+/mnt/c/Users/smurp/CLionProjects/evolution/xmalloc.h
+
+/mnt/c/Users/smurp/CLionProjects/evolution/linked-list.h
+
+/mnt/c/Users/smurp/CLionProjects/evolution/main.c
+stdio.h
+-
+
+/mnt/c/Users/smurp/CLionProjects/evolution/xmalloc.c
+stdio.h
+-
+xmalloc.h
+/mnt/c/Users/smurp/CLionProjects/evolution/xmalloc.h
+
+/mnt/c/Users/smurp/CLionProjects/evolution/xmalloc.h
+stdlib.h
+-
+

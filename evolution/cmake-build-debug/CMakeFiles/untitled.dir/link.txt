@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/untitled.dir/main.c.o CMakeFiles/untitled.dir/linked-list.c.o CMakeFiles/untitled.dir/xmalloc.c.o  -o untitled 
