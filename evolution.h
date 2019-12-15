@@ -1,34 +1,22 @@
-
 #ifndef H_EVOLUTION_H
-
 #define H_EVOLUTION_H
 
-#include "linked-list.h"
-
+#include "h/linked-list.h"
 struct animal {
-
-    int i; // row numberofanimal’sposition
-
-    int j; // columnnumberofanimal’s position
-
-    int d; // direction theanimalisfacing: 0,...,7
-
-    int e; // animal’s energy
-
-    int genes[8]; // theanimal’schromosome(array ofgenes)
-
-} animal;
-
+    int i;
+    int j;
+    int d;
+    int e;
+    int genes[8];
+}; animal;
 struct world {
-    int world_h; // world’sheight
-    int world_w; // world’swidth
-    int eden_h; // Eden’sheight
-    int eden_w; // Eden’swidth
-    int plant_energy; // plantenergy
-    int reproduction_threshold; // reproduction threshold
-
-    int **plants; // world_h×world_warray ofplants
-    conscell *herd; // theheadofthelinkedlistoftheani
+    int world_h;
+    int world_w;
+    int eden_h;
+    int eden_w;
+    int plant_energy;
+    int reproduction_threshold;
+    int **plants;
+    conscell *herd;
 };
-
-#endif /∗ H_EVOLUTION_H */
+#endif //H_EVOLUTION_H

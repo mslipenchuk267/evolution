@@ -1,44 +1,60 @@
 #include <stdio.h>
 #include "linked-list.h"
-#include "malloc.h"
-node* create(int data,node* next)
+#include "xmalloc.h"
+conscell *ll_push(conscell *list, void *data)
 {
-    node* new_node = (node*)malloc(sizeof(node));
-    if(new_node == NULL)
-    {
-        printf("Error creating a new node.\n");
-        exit(0);
+    conscell *new = xmalloc(sizeof *new);
+    new->data = data;
+    new->next = list;
+    return new;
+}
+conscell *ll_pop(conscell *list)
+{
+    if(list == NULL) {
+        return NULL;
     }
-    new_node->data = data;
-    new_node->next = next;
-
-    return new_node;
-}
-node* append(node* head, int data)
-{
-    if(head == NULL)
-        return NULL;
-    /* go to the last node */
-    node *cursor = head;
-    while(cursor->next != NULL)
-        cursor = cursor->next;
-
-    /* create a new node */
-    node* new_node =  create(data,NULL);
-    cursor->next = new_node;
-
-    return head;
-}
-node* remove_front(node* head)
-{
-    if(head == NULL)
-        return NULL;
-    node *front = head;
-    head = head->next;
+    conscell *front = list;
+    list = list->next;
     front->next = NULL;
     /* is this the last node in the list */
-    if(front == head)
-        head = NULL;
+    if(front == list)
+        list = NULL;
     free(front);
-    return head;
+    return list;
+}
+void ll_free(conscell *list) // version1: iterative
+{
+    while (list != NULL) {
+        conscell *p = list->next; // rememberthenextnode
+        free(list); // freetheheadnode
+        list = p; // produceashorterlist
+    }
+}
+conscell *ll_reverse(conscell *list){
+    conscell* prev = NULL;
+    conscell* current = list;
+    conscell* next;
+    while (current != NULL)
+    {
+        next  = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    list = prev;
+    return list;
+}
+int main() {
+    conscell *list = NULL; // an empty list
+    int a = 101, b = -45, c = 1000, d = 12;
+    list = ll_push(list, &a);
+    list = ll_push(list, &b);
+    list = ll_push(list, &c);
+    list = ll_push(list, &d);
+    printf("the original linked list:\n");
+    for (conscell *p = list; p != NULL; p = p->next) {
+        printf("%d ", *(int *) p->data);
+    }
+    //putchar(’\n’);
+    return 0;
 }
