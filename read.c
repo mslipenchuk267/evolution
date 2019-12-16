@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "xmalloc.h"
+#include "h/xmalloc.h"
 #include "fetch-line.h"
-#include "linked-list.h"
+#include "h/linked-list.h"
 #include "h/read.h"
 #define BUFLEN 1024
 

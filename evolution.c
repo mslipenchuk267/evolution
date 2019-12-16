@@ -4,8 +4,8 @@
 
 #include <stdio.h>
 #include "h/evolution.h"
-#include "xmalloc.h"
-#include "array.h"
+#include "stdlib.h"
+#include "h/array.h"
 #include "h/read.h"
 #include "h/linked-list.h"
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
@@ -14,30 +14,51 @@ struct point {
     int j;
 };
 
-static inline int random(int n);
-static void free_herd(conscell *herd);
-static int dead_or_alive(const void *aa);
-static conscell *remove_the_dead(conscell *herd);
-static int nearer_the_eden(const void *aa, const void *bb, void *params);
-static void initialize_plants(struct world *world);
-static void add_plants(struct world *world);
-static int gene_to_activate(int genes[8]);
-static void turn(struct animal *animal);
-static void move(struct world *world, struct animal *animal);
-static void feed(struct world *world, struct animal *animal);
-static struct animal *clone(struct animal *old);
-static void mutate(int genes[8]);
-static void reproduce(struct world *world, struct animal *animal);
-static void update_world(struct world *world);
-static void evolve(struct world *world, unsigned int n);
-static void evolve_with_figs(struct world *world, unsigned int n);
-static void show_usage(char *progname);
+static inline int randomInt(int n); // done - not tested
+static void free_herd(conscell *herd); // done - not tested
+static int dead_or_alive(const void *aa); // done - not tested
+static conscell *remove_the_dead(conscell *herd); // done - not tested
+static int nearer_the_eden(const void *aa, const void *bb, void *params); // not done ***********
+static void initialize_plants(struct world *world); // done - not tested
+static void add_plants(struct world *world); // done - not tested
+static int gene_to_activate(int genes[8]); // not done ************
+static void turn(struct animal *animal); // done - not tested
+static void move(struct world *world, struct animal *animal); // done - not tested
+static void feed(struct world *world, struct animal *animal); // done - not tested
+static struct animal *clone(struct animal *old); // done - not tested
+static void mutate(int genes[8]); // done - not tested
+static void reproduce(struct world *world, struct animal *animal); // done - not tested
+static void update_world(struct world *world); // done - not tested
+static void evolve(struct world *world, unsigned int n); // done - not tested
+static void evolve_with_figs(struct world *world, unsigned int n); // done - not tested
+static void show_usage(char *progname); // done - not tested
+
+// Return a random integer from 0 to n-1
+static inline int randomInt(int n) {
+    return rand() / (RAND_MAX/n + 1);
+}
+
+static void initialize_plants(struct world *world) {
+    make_matrix(world->plants, world->world_h, world->world_w);
+}
+
+static int nearer_the_eden(const void *aa, const void *bb, void *params) {
+
+}
 
 static void free_herd(conscell *herd) {
     for (conscell *p = herd; p != NULL; p = p->next) {
         free(p->data);
     }
     ll_free(herd);
+}
+
+static int dead_or_alive(const void *aa){
+    if (aa < 1) {
+        return 0;
+    } else {
+        return 1;
+    }
 }
 
 static conscell *remove_the_dead(conscell *herd) {
@@ -60,8 +81,19 @@ static struct animal *clone(struct animal *old) {
     return new;
 }
 
-static void turn(struct animal *animal) {
+static void feed(struct world *world, struct animal *animal) {
+    if (world->plants[animal->i][animal->j] > 0) {
+        world->plants[animal->i][animal->j] -= 1;
+        animal->e += world->plant_energy;
+    }
+}
 
+static void turn(struct animal *animal) {
+    int activated_gene;
+    // Select which gene is activated
+    activated_gene = gene_to_activate(animal->genes);
+    // Update animal's orientation i.e. direction
+    animal->d = (animal->d + activated_gene) % 8;
 }
 
 static void move(struct world *world, struct animal *animal) {
@@ -94,17 +126,26 @@ static void move(struct world *world, struct animal *animal) {
     animal->j = j;
 }
 
-static void add_plants(struct world *world) {
-    int i = random(world->world_h);
-    int j = random(world->world_w);
-    world->plants[i][j]++; // Deposit morsel of food
+static void mutate(int genes[8]) {
+    int gene_to_mutate = randomInt(8);
+    int mutations[3] = {-1, 0, 1};
+    genes[gene_to_mutate] += mutations[randomInt(3)];
+}
 
+static void add_plants(struct world *world) {
+    // Deposit food in world
+    int i = randomInt(world->world_h);
+    int j = randomInt(world->world_w);
+    world->plants[i][j]++; // Deposit morsel of food
+    // Deposit food in Eden if it exists
     if (world->eden_h > 0 && world->eden_w > 0) {
-        i;
-        j;
+        i = randomInt(world->eden_h);
+        j = randomInt(world->eden_w);
         world->plants[i][j]++;
     }
 }
+
+
 
 static void reproduce(struct world *world, struct animal *animal) {
     animal->e /= 2;
@@ -147,6 +188,11 @@ static void evolve(struct world *world, unsigned int n){
             update_world(world);
         }
     }
+}
+
+static void show_usage(char *progname){
+    // square bracket indicates optional parameter
+    printf("Reads World Definition from infile, performs nupdates, and writes result to outfile.\nUsage: ./evolution n [f] <infile  >outfile\nn >= 0 : (Req.) number of updates\nf >= 0: number of snapshots after n updates");
 }
 
 int main(int argc, char **argv) {
@@ -193,5 +239,4 @@ int main(int argc, char **argv) {
         free_matrix(world->plants);
         free_herd(world->herd);
         return exit_status;
-
 }

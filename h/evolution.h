@@ -1,7 +1,7 @@
 #ifndef H_EVOLUTION_H
 #define H_EVOLUTION_H
-
 #include "h/linked-list.h"
+
 struct animal {
     int i;
     int j;
