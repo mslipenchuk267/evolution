@@ -21,7 +21,7 @@ static conscell *remove_the_dead(conscell *herd); // done - not tested
 static int nearer_the_eden(const void *aa, const void *bb, void *params); // not done ***********
 static void initialize_plants(struct world *world); // done - not tested
 static void add_plants(struct world *world); // done - not tested
-static int gene_to_activate(int genes[8]); // not done ************
+static int gene_to_activate(int genes[8]); // done - not tested
 static void turn(struct animal *animal); // done - not tested
 static void move(struct world *world, struct animal *animal); // done - not tested
 static void feed(struct world *world, struct animal *animal); // done - not tested
@@ -44,6 +44,12 @@ static void initialize_plants(struct world *world) {
 
 static int nearer_the_eden(const void *aa, const void *bb, void *params) {
 
+}
+
+static int gene_to_activate(int genes[8]) {
+    int random_gene;
+    random_gene = randomInt(8);
+    return random_gene;
 }
 
 static void free_herd(conscell *herd) {

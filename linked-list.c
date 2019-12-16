@@ -60,3 +60,39 @@ conscell *ll_filter(conscell *list,
         return list;
     }
 }
+conscell *ll_sort(conscell *list,
+        int (*cmp)(const void *a, const void *b, void *params),
+        void *params) {
+    conscell *list1 = NULL;
+    conscell *list2 = NULL;
+    conscell *p, *q, *head;
+    if (list == NULL) {
+        return list;
+    }
+    head = list;
+    p = list->next;
+    while (p != NULL){
+        q = p->next;
+        if (cmp(p->data, head->data, params) < 0){
+            p->next = list1;
+            list1 = p;
+        } else {
+            p->next = list2;
+            list2 = p;
+        }
+        p = q;
+    }
+    list1 = ll_sort(list1, cmp, params);
+    list2 = ll_sort(list2, cmp, params);
+    head->next = list2;
+
+    if (list1 == NULL){
+        return head;
+    }
+    p = list1;
+    while(p->next != NULL) {
+        p = p->next;
+    }
+    p->next = head;
+    return list1;
+}

@@ -16,7 +16,7 @@
     for (make_matrix_loop_counter = 0;                      \
             make_matrix_loop_counter < (m);                 \
             make_matrix_loop_counter++)                     \
-        make_vector((a) [make_matrix_loop_counter], (n));   \
+        make_vector((a)[make_matrix_loop_counter], (n));    \
     (a)[m] = NULL;                                          \
 } while (0)
 
